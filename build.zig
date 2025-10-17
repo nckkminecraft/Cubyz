@@ -40,6 +40,12 @@ fn linkLibraries(b: *std.Build, exe: *std.Build.Step.Compile, useLocalDeps: bool
 		return;
 	};
 
+        const zstd_dependency = b.dependency("zstd", .{
+            .target = target,
+            .optimize = optimize,
+        });
+        exe.linkLibrary(zstd_dependency.artifact("zstd"));
+
 	exe.addIncludePath(headersDeps.path("include"));
 	exe.addObjectFile(libsDeps.path("lib").path(b, artifactName));
 	const subPath = libsDeps.path("lib").path(b, depsLib);
